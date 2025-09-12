@@ -15,27 +15,26 @@ app.use((req, res, next) => {
     next();
 });
 
-console.log("Hello World"); //Testing app (only shows in vscode terminal not browser console).
+console.log("Hello World: ", __dirname); //Testing app (only shows in vscode terminal not browser console).
 
 //\\\\\\\\\\\\\\\
-//  This object (Node express app object) has several methods. Here are some examples:
+//This object (Node express app object) has several methods. Here are some examples:
 
 //\\\\\\\\\\\\\\\
-//  app.get retrieves data. In this case index.html to be used for this express app.
-
+//app.get retrieves data. In this case the index.html file located in the views folder.
 // app.get('/', (req,res) => {
 //     //res.send("Hello Express"); //prints "Hello Express" on the browser window.
-//     const absolutePath = __dirname + '/views/index.html';//__dirname is the Node global variable
+//     const absolutePath = __dirname + '/views/index.html';//__dirname is the Node global variable that gives the current full file path.
 
 //     res.sendFile(absolutePath);//response results in file.
 // });
 
 //\\\\\\\\\\\\\\\\
-//  app.use results in using the style.css file located in /public for this express app
+//app.use results in using the style.css file located in /public for this express app
 app.use('/public', express.static(path.join(__dirname + '/public')));//path.join handles path separators (/ or \) correctly for your operating system.
 
 //\\\\\\\\\\\\\\\\\\
-//  resulted in web page displaying myObj as json when url changed to http://localhost:3000/json
+//resulted in web page displaying myObj as json when url changed to http://localhost:3000/json
 // app.get('/json', (req, res) => {
 //     let myObj = {"message": "Hello json"};
 //     //process.env.MESSAGE_STYLE variable accessible through require('dotenv').config()
@@ -47,8 +46,7 @@ app.use('/public', express.static(path.join(__dirname + '/public')));//path.join
 // });
 
 //\\\\\\\\\\\\\\\\\\\\\
-// Middleware chained to a specific route: app.get('/now, ...)
-
+//Middleware chained to a specific route: app.get('/now, ...)
 // app.get('/now', (req, res, next) => {
 //         req.time = new Date().toString();
 //         next();
@@ -58,16 +56,34 @@ app.use('/public', express.static(path.join(__dirname + '/public')));//path.join
 //     });
 
 //\\\\\\\\\\\\\\\\\
-// Get Route Parameter Input from the Client
-app.get('/:word/echo', (req, res, next) => {
-        req.word = req.params.word;
-        next();
+//Get Route Parameter Input from the Client
+// app.get('/:word/echo', (req, res, next) => {
+//         req.word = req.params.word;
+//         next();
+//     },
+//     (req, res) => {
+//         res.send({echo: req.word});
+        
+//     }
+// );
+
+//\\\\\\\\\\\\\\\\\
+//Get Query Parameter Input from the Client
+app.get('/name?firstname=Jason&lastname=Jayson', (req, res, next) => {
+    req.name = {name: "firstname lastname"};
+    next();
     },
     (req, res) => {
-        res.send({echo: req.word});
-        
-    }
-);
+        res.json({name: req.name});
+    });
+
+//Note: In the following exercise you are going to receive data from a POST request, 
+// at the same /name route path. If you want, you can use the method 
+//              app.route(path).get(handler).post(handler). 
+// This syntax allows you to 
+// chain different verb handlers on the same path route. You can save a bit of 
+// typing, and have cleaner code.
+
 
 
 
