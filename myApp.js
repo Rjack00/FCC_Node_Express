@@ -1,9 +1,10 @@
 //These first 2 lines create an Express app object named app
-let express = require('express');
-let app = express();
+const express = require('express');
+const app = express();
 
-let path = require('path');//Node.js module to handle file paths safely across operating systems
+const path = require('path');//Node.js module to handle file paths safely across operating systems
 require('dotenv').config();//Loads variables from .env file. dotenv was installed and located in package.json
+const bodyParser = require('body-parser');
 
 // Note: Express evaluates functions in the order they appear in the code. 
 
@@ -68,14 +69,20 @@ app.use('/public', express.static(path.join(__dirname + '/public')));//path.join
 // );
 
 //\\\\\\\\\\\\\\\\\
-//Get Query Parameter Input from the Client
-app.get('/name?firstname=Jason&lastname=Jayson', (req, res, next) => {
-    req.name = {name: "firstname lastname"};
-    next();
-    },
-    (req, res) => {
-        res.json({name: req.name});
+//Get Query Parameter Input from the Client - Define a GET route for the '/name' endpoint
+app.get('/name', (req, res) => {
+    // Destructure 'first' and 'last' properties from req.query, which contains query parameters from the URL (e.g., ?first=John&last=Doe)
+    const {first, last} = req.query;
+
+    // Send a JSON response with a 'name' key, combining 'first' and 'last' with a space (e.g., { name: "John Doe" })
+    res.json({name: `${first} ${last}`});
+
     });
+
+//\\\\\\\\\\\\\\\\
+//Using body-parser (installed, see package.json) and imported at the top of this page
+//Mount body-parser middleware to parse URL-encoded data with the querystring library
+app.use(bodyParser.urlencoded({extended: false}));
 
 //Note: In the following exercise you are going to receive data from a POST request, 
 // at the same /name route path. If you want, you can use the method 
