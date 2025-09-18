@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 console.log("Hello World: ", __dirname); //Testing app (only shows in vscode terminal not browser console).
 
 //\\\\\\\\\\\\\\\
-//This object (Node express app object) has several methods. Here are some examples:
+//This object (Node express app object) has several methods. The following are some examples:
 
 //\\\\\\\\\\\\\\\
 //app.get retrieves data. In this case the index.html file located in the views folder.
@@ -58,7 +58,7 @@ app.use('/public', express.static(path.join(__dirname + '/public')));//path.join
 
 //\\\\\\\\\\\\\\\\\
 //Get Route Parameter Input from the Client
-// app.get('/:word/echo', (req, res, next) => {
+// app.get('/:word/echo', (req, res, next) => { //This is middleware
 //         req.word = req.params.word;
 //         next();
 //     },
