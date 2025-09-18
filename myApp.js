@@ -23,12 +23,12 @@ console.log("Hello World: ", __dirname); //Testing app (only shows in vscode ter
 
 //\\\\\\\\\\\\\\\
 //app.get retrieves data. In this case the index.html file located in the views folder.
-// app.get('/', (req,res) => {
-//     //res.send("Hello Express"); //prints "Hello Express" on the browser window.
-//     const absolutePath = __dirname + '/views/index.html';//__dirname is the Node global variable that gives the current full file path.
+app.get('/', (req,res) => {
+    //res.send("Hello Express"); //prints "Hello Express" on the browser window.
+    const absolutePath = __dirname + '/views/index.html';//__dirname is the Node global variable that gives the current full file path.
 
-//     res.sendFile(absolutePath);//response results in file.
-// });
+    res.sendFile(absolutePath);//response results in file.
+});
 
 //\\\\\\\\\\\\\\\\
 //app.use results in using the style.css file located in /public for this express app
@@ -70,18 +70,19 @@ app.use('/public', express.static(path.join(__dirname + '/public')));//path.join
 
 //\\\\\\\\\\\\\\\\\
 //Get Query Parameter Input from the Client - Define a GET route for the '/name' endpoint
-app.get('/name', (req, res) => {
-    // Destructure 'first' and 'last' properties from req.query, which contains query parameters from the URL (e.g., ?first=John&last=Doe)
-    const {first, last} = req.query;
+// app.get('/name', (req, res) => {
+//     // Destructure 'first' and 'last' properties from req.query, which contains query parameters from the URL (e.g., ?first=John&last=Doe)
+//     const {first, last} = req.query;
 
-    // Send a JSON response with a 'name' key, combining 'first' and 'last' with a space (e.g., { name: "John Doe" })
-    res.json({name: `${first} ${last}`});
+//     // Send a JSON response with a 'name' key, combining 'first' and 'last' with a space (e.g., { name: "John Doe" })
+//     res.json({name: `${first} ${last}`});
 
-    });
+//     });
 
 //\\\\\\\\\\\\\\\\
 //Using body-parser (installed, see package.json) and imported at the top of this page
 //Mount body-parser middleware to parse URL-encoded data with the querystring library
+//This applies bodyParser.urlencoded() to all incoming requests (GET, POST, etc.), parsing URL-encoded bodies for any route that needs req.body.
 app.use(bodyParser.urlencoded({extended: false}));
 
 //Note: In the following exercise you are going to receive data from a POST request, 
@@ -91,7 +92,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 // chain different verb handlers on the same path route. You can save a bit of 
 // typing, and have cleaner code.
 
-
+//\\\\\\\\\\\\\\\\
+//Get data from POST requests
+//Results in JSON object being printed on screen at localhost:3000/name when submitted from index.html form
+app.post('/name', (req, res) => {
+    const {first, last} = req.body;//Extract first, last from req.body, parsed by body-parser
+    res.send({name: `${first} ${last}`});
+});
 
 
 
